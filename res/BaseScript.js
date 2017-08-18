@@ -2,10 +2,13 @@ var base = Java.type("nohorjo.resttest.BaseScript");
 
 function makeRequest(payload) {
 	var isFile = false;
-	if(payload.file){
+	if (payload.file) {
 		isFile = true;
 	}
-	return base.makeRequest(payload.url, payload.method.toUpperCase(), payload.headers, payload.data, isFile);
+	return base.makeRequest(payload.url, payload.method.toUpperCase(),
+			payload.headers || {}, payload.data || null, isFile);
 }
 
-function sendFile
+function assert(bool, message) {
+	base.assertTrue(bool, message || "");
+}
