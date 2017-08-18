@@ -2,12 +2,13 @@ package nohorjo.resttest;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class BaseScript {
 			boolean isFile) throws IOException {
 		Map<String, Object> response = new HashMap<>();
 		if (isFile) {
-			data = new String(Files.readAllBytes(new File(data).toPath()));
+			data = new String(Files.readAllBytes(Paths.get(data)));
 		}
 
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
@@ -62,6 +63,15 @@ public class BaseScript {
 		if (!True) {
 			throw new AssertionError(message);
 		}
+	}
+
+	public static void writeToFile(String filename, String data, boolean append) throws IOException {
+		Files.write(Paths.get(filename), data.getBytes(), StandardOpenOption.CREATE,
+				append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING);
+	}
+
+	public static String readFromFile(String filename) throws IOException {
+		return new String(Files.readAllBytes(Paths.get(filename)));
 	}
 
 }

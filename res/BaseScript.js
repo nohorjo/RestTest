@@ -12,3 +12,11 @@ function makeRequest(payload) {
 function assert(bool, message) {
 	base.assertTrue(bool, message || "");
 }
+
+function writeToFile(filename, data, append){
+	base.writeToFile(filename, data, append||false);
+}
+
+function readFromFile(filename){
+	base.readFromFile(filename);
+}
