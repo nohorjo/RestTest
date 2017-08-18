@@ -1,0 +1,30 @@
+<project name="RestTest" default="build" basedir="..">
+
+	<property name="main.class" value="nohorjo.resttest.Main" />
+	<property name="app.name" value="RestTest" />
+
+	<target name="build" depends="clean,jar" />
+
+	<target name="clean">
+		<delete>
+			<fileset dir="build">
+				<include name="**/*" />
+				<exclude name="build.xml" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="jar">
+		<jar destfile="build/${app.name}.jar">
+			<fileset dir="bin">
+				<exclude name="**/*TEST.class" />
+				<exclude name="**/*MOCK.class" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+			<zipfileset dir="res" includes="**/*" />
+		</jar>
+	</target>
+
+</project>
