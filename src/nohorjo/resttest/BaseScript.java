@@ -14,6 +14,8 @@ import java.util.Map;
 
 public class BaseScript {
 
+	private static final Map<String, Object> globalVariables = new HashMap<>();
+
 	public static Map<String, ?> makeRequest(String url, String method, Map<String, String> headers, String data,
 			boolean isFile) throws IOException {
 		Map<String, Object> response = new HashMap<>();
@@ -72,6 +74,14 @@ public class BaseScript {
 
 	public static String readFromFile(String filename) throws IOException {
 		return new String(Files.readAllBytes(Paths.get(filename)));
+	}
+
+	public static void setGlobal(String name, Object value) {
+		globalVariables.put(name, value);
+	}
+
+	public static Object getGlobal(String name) {
+		return globalVariables.get(name);
 	}
 
 }

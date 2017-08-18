@@ -13,10 +13,18 @@ function assert(bool, message) {
 	base.assertTrue(bool, message || "");
 }
 
-function writeToFile(filename, data, append){
-	base.writeToFile(filename, data, append||false);
+function writeToFile(filename, data, append) {
+	base.writeToFile(filename, data, append || false);
 }
 
-function readFromFile(filename){
-	base.readFromFile(filename);
+function readFromFile(filename) {
+	return base.readFromFile(filename);
+}
+
+function global(name, value) {
+	if (value !== undefined) {
+		base.setGlobal(name, value);
+	} else {
+		return base.getGlobal(name);
+	}
 }

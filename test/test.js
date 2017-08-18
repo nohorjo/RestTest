@@ -1,9 +1,18 @@
-var resp = makeRequest({
-	url : "http://google.com/",
-	method : "post",
-	data : "fd"
-});
+global("string", "s")
+print(global("string"))
 
-print(resp)
+global("number", 1)
+print(global("number"))
 
-assert(false)
+global("boolean", true)
+print(global("boolean"))
+
+global("list", [ 9, 8, 7 ])
+print(global("list")[0])
+
+global("object", {
+	a : {
+		b : "c"
+	}
+})
+print(global("object").a.b)
