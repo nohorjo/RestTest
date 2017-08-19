@@ -9,9 +9,29 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HttpUtils {
+
+	/**
+	 * Makes a http request
+	 * 
+	 * @param url
+	 * @param method
+	 * @param headers
+	 * @param data
+	 * @param isFile
+	 *            if true then 'data' will be treated as the file path
+	 * @return A {@link Map} with the following properties:<br/>
+	 *         <ul>
+	 *         <li>code: the response code
+	 *         <li>message: the response message
+	 *         <li>headers: a {@link Map} of {@link List}s of headers
+	 *         <li>body: the response body
+	 *         </ul>
+	 * @throws IOException
+	 */
 	public static Map<String, ?> makeRequest(String url, String method, Map<String, String> headers, String data,
 			boolean isFile) throws IOException {
 		Map<String, Object> response = new HashMap<>();
@@ -49,6 +69,7 @@ public class HttpUtils {
 		while ((inputLine = responseReader.readLine()) != null) {
 			respBody.append(inputLine);
 		}
+		responseReader.close();
 
 		response.put("body", respBody.toString());
 

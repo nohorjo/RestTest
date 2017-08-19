@@ -11,10 +11,23 @@ import java.util.Properties;
 
 import nohorjo.resttest.engine.BaseScript;
 
+/**
+ * Handles global properties that are available to all test suites
+ * 
+ * @author muhammed
+ *
+ */
 public class PropertiesUtils {
 
 	private static final Map<String, Object> globalVariables = new HashMap<>();
 
+	/**
+	 * Loads project properties and environment variables
+	 * 
+	 * @param project
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public static void loadEnvAndProperties(String project) throws IOException, FileNotFoundException {
 		File propertiesFile = new File(project + File.separator + "project.properties");
 		if (propertiesFile.exists()) {

@@ -1,5 +1,8 @@
 package nohorjo.resttest.engine;
 
+/**
+ * Implements utils classes and provides an interface for the JavaScript
+ */
 import java.io.IOException;
 import java.util.Map;
 
