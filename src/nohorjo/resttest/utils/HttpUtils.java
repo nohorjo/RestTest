@@ -33,7 +33,7 @@ public class HttpUtils {
 	 * @throws IOException
 	 */
 	public static Map<String, ?> makeRequest(String url, String method, Map<String, String> headers, String data,
-			boolean isFile) throws IOException {
+			boolean isFile, int timeout) throws IOException {
 		Map<String, Object> response = new HashMap<>();
 		if (isFile) {
 			data = new String(Files.readAllBytes(Paths.get(data)));
@@ -41,6 +41,7 @@ public class HttpUtils {
 
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 		con.setRequestMethod(method);
+		con.setConnectTimeout(timeout);
 		for (String headerName : headers.keySet()) {
 			con.setRequestProperty(headerName, headers.get(headerName));
 		}

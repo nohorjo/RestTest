@@ -6,7 +6,8 @@ function makeRequest(payload) {
 		isFile = true;
 	}
 	return base.makeRequest(payload.url, payload.method.toUpperCase(),
-			payload.headers || {}, payload.data || null, isFile);
+			payload.headers || {}, payload.data || null, isFile,
+			payload.timeout || 60000);
 }
 
 function assert(bool, message) {

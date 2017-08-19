@@ -21,8 +21,8 @@ import nohorjo.resttest.utils.XMLUtils;
 public class BaseScript {
 
 	public static Map<String, ?> makeRequest(String url, String method, Map<String, String> headers, String data,
-			boolean isFile) throws IOException {
-		return HttpUtils.makeRequest(url, method, headers, data, isFile);
+			boolean isFile, int timeout) throws IOException {
+		return HttpUtils.makeRequest(url, method, headers, data, isFile, timeout);
 	}
 
 	public static void assertTrue(boolean True, String message) {
