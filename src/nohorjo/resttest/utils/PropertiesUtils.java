@@ -28,8 +28,8 @@ public class PropertiesUtils {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static void loadEnvAndProperties(String project) throws IOException, FileNotFoundException {
-		File propertiesFile = new File(project + File.separator + "project.properties");
+	public static void loadEnvAndProperties(File projectDir) throws IOException, FileNotFoundException {
+		File propertiesFile = new File(projectDir, "project.properties");
 		if (propertiesFile.exists()) {
 			Properties props = new Properties(System.getProperties());
 			try (InputStream is = new FileInputStream(propertiesFile)) {

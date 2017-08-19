@@ -44,9 +44,11 @@ public class Main {
 		int returnCode = 0;
 		try {
 			String project = args[0];
-			PropertiesUtils.loadEnvAndProperties(project);
+			File projectDir = new File(project);
+			PropertiesUtils.loadEnvAndProperties(projectDir);
+			ScriptRunner.loadInitScript(projectDir);
 
-			File[] testSuites = new File(project).listFiles(DIRS);
+			File[] testSuites = projectDir.listFiles(DIRS);
 			for (File ts : testSuites) {
 				File[] scripts = ts.listFiles(JS_ONLY);
 				for (File testCasescript : scripts) {
@@ -57,18 +59,20 @@ public class Main {
 				}
 			}
 
+			System.out.println("\n\nDone!");
 		} catch (Throwable e) {
 			e.printStackTrace();
 			returnCode = 1;
 		}
 
-		System.out.println("\n\nDone!");
-		System.out.println("\n\nSummary:");
-		for (String testSuite : results.keySet()) {
-			System.out.println(testSuite);
-			Map<String, String> testSuiteResults = results.get(testSuite);
-			for (String result : testSuiteResults.keySet()) {
-				System.out.println("\t" + testSuiteResults.get(result));
+		if (!results.isEmpty()) {
+			System.out.println("\n\nSummary:");
+			for (String testSuite : results.keySet()) {
+				System.out.println(testSuite);
+				Map<String, String> testSuiteResults = results.get(testSuite);
+				for (String result : testSuiteResults.keySet()) {
+					System.out.println("\t" + testSuiteResults.get(result));
+				}
 			}
 		}
 		System.exit(returnCode);
