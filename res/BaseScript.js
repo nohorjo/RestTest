@@ -38,3 +38,7 @@ function global(name, value) {
 function evalXPath(xml, xpath) {
 	return base.evalXPath(xml, xpath);
 }
+
+function sleep(millis) {
+	base.sleep(millis);
+}

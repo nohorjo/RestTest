@@ -14,7 +14,7 @@ import nohorjo.resttest.utils.PropertiesUtils;
 
 public class Main {
 
-	private static final Map<String, Boolean> results = new HashMap<>();
+	private static final Map<String, String> results = new HashMap<>();
 
 	private static final FilenameFilter JS_ONLY = new FilenameFilter() {
 		@Override
@@ -48,7 +48,7 @@ public class Main {
 		System.out.println("\n\nDone!");
 		System.out.println("\n\nSummary:");
 		for (String test : results.keySet()) {
-			System.out.println(test + "\t" + (results.get(test) ? "passed" : "failed"));
+			System.out.println(test + "\t" + results.get(test));
 		}
 		System.exit(returnCode);
 	}
@@ -58,6 +58,7 @@ public class Main {
 		String name = script.getName();
 		String contents = new String(Files.readAllBytes(script.toPath()));
 		System.out.printf("\nExecuting %s\n\n", name);
+		long start = System.currentTimeMillis();
 		try {
 			new ScriptRunner(contents).run();
 			System.out.printf("\nFinished %s\n\n", name);
@@ -74,7 +75,8 @@ public class Main {
 			returnCode = 1;
 			System.err.println(e.getMessage().replace("<eval>", name));
 		}
-		results.put(name, returnCode == 0);
+		results.put(name, String.format("%s\t%d milllis", returnCode == 0 ? "passed" : "failed",
+				System.currentTimeMillis() - start));
 		return returnCode;
 	}
 

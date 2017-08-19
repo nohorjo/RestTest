@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import nohorjo.resttest.utils.AssertUtils;
 import nohorjo.resttest.utils.FileUtils;
+import nohorjo.resttest.utils.GenericUtils;
 import nohorjo.resttest.utils.HttpUtils;
 import nohorjo.resttest.utils.PropertiesUtils;
 import nohorjo.resttest.utils.XMLUtils;
@@ -52,5 +53,9 @@ public class BaseScript {
 	public static String evalXPath(String xml, String xpath)
 			throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		return XMLUtils.evalXPath(xml, xpath);
+	}
+
+	public static void sleep(long millis) {
+		GenericUtils.sleep(millis);
 	}
 }
