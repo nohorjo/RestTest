@@ -3,7 +3,10 @@ package nohorjo.resttest;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.script.ScriptException;
@@ -40,6 +43,13 @@ public class Main {
 		}
 	};
 
+	private static final Comparator<File> BY_NAME = new Comparator<File>() {
+		@Override
+		public int compare(File o1, File o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
+	};
+
 	public static void main(String[] args) {
 		int returnCode = 0;
 		try {
@@ -48,9 +58,11 @@ public class Main {
 			PropertiesUtils.loadEnvAndProperties(projectDir);
 			ScriptRunner.loadInitScript(projectDir);
 
-			File[] testSuites = projectDir.listFiles(DIRS);
+			List<File> testSuites = Arrays.asList(projectDir.listFiles(DIRS));
+			testSuites.sort(BY_NAME);
 			for (File ts : testSuites) {
-				File[] scripts = ts.listFiles(JS_ONLY);
+				List<File> scripts = Arrays.asList(ts.listFiles(JS_ONLY));
+				scripts.sort(BY_NAME);
 				for (File testCasescript : scripts) {
 					int rc = processScript(ts.getName(), testCasescript);
 					if (returnCode == 0) {// if any test fails return 1
@@ -58,7 +70,6 @@ public class Main {
 					}
 				}
 			}
-
 			System.out.println("\n\nDone!");
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -78,27 +89,28 @@ public class Main {
 		System.exit(returnCode);
 	}
 
-	private static int processScript(String testSuiteName, File script) throws Throwable {
+	private static int processScript(String testSuiteName, File script) {
 		int returnCode = 0;
 		String name = script.getName();
-		String contents = new String(Files.readAllBytes(script.toPath()));
 		System.out.printf("\nExecuting %s\n\n", name);
 		long start = System.currentTimeMillis();
 		try {
-			new ScriptRunner(contents).run();
-			System.out.printf("\nFinished %s\n\n", name);
-		} catch (AssertionError | RuntimeException e) {
-			Throwable ex = e;
-			if (ex instanceof AssertionError
-					|| (ex instanceof RuntimeException && (ex = ex.getCause()) instanceof XPathExpressionException)) {
-				returnCode = 1;
-				printOffendingLineNumber(name, ex);
-			} else {
-				throw e;
+			String contents = new String(Files.readAllBytes(script.toPath()));
+			try {
+				new ScriptRunner(contents).run();
+			} catch (RuntimeException e) {
+				throw e.getCause();
 			}
+			System.out.printf("\nFinished %s\n\n", name);
+		} catch (AssertionError | XPathExpressionException e) {
+			returnCode = 1;
+			printOffendingLineNumber(name, e);
 		} catch (ScriptException e) {
 			returnCode = 1;
 			System.err.println(e.getMessage().replace("<eval>", name));
+		} catch (Throwable e) {
+			returnCode = 1;
+			e.printStackTrace();
 		}
 
 		Map<String, String> m = results.get(testSuiteName);
