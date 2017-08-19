@@ -1,4 +1,4 @@
-var base = Java.type("nohorjo.resttest.BaseScript");
+var base = Java.type("nohorjo.resttest.engine.BaseScript");
 
 function makeRequest(payload) {
 	var isFile = false;
@@ -21,10 +21,20 @@ function readFromFile(filename) {
 	return base.readFromFile(filename);
 }
 
+function fileExists(filename) {
+	return base.fileExists(filename);
+}
+
 function global(name, value) {
 	if (value !== undefined) {
 		base.setGlobal(name, value);
-	} else {
+	} else if (name !== undefined) {
 		return base.getGlobal(name);
+	} else {
+		return base.getAllGlobals();
 	}
+}
+
+function evalXPath(xml, xpath) {
+	return base.evalXPath(xml, xpath);
 }

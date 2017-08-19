@@ -1,4 +1,4 @@
-package nohorjo.resttest;
+package nohorjo.resttest.engine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,9 +9,12 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class ScriptRunner {
-	
-	private static final String BASE_SCRIPT;
 
+	private static final String BASE_SCRIPT;
+	
+	/**
+	 * Loads the base script from the classpath
+	 */
 	static {
 		String script = "";
 		try (BufferedReader reader = new BufferedReader(
@@ -35,7 +38,12 @@ public class ScriptRunner {
 		engine.eval(BASE_SCRIPT);
 	}
 
-	public void run() throws ScriptException {
+	/**
+	 * Run the script
+	 * 
+	 * @throws Throwable
+	 */
+	public void run() throws Throwable {
 		engine.eval(script);
 	}
 
