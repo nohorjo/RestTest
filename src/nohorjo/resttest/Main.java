@@ -71,7 +71,7 @@ public class Main {
 				System.out.println(testSuite);
 				Map<String, String> testSuiteResults = results.get(testSuite);
 				for (String result : testSuiteResults.keySet()) {
-					System.out.println("\t" + testSuiteResults.get(result));
+					System.out.println("\t" + result + "\t" + testSuiteResults.get(result));
 				}
 			}
 		}
