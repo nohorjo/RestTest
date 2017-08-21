@@ -117,7 +117,7 @@ public class Main {
 		if (m == null) {
 			m = new HashMap<>();
 		}
-		m.put(name, String.format("%s\t%d milllis", returnCode == 0 ? "passed" : "failed",
+		m.put(name, String.format("%s\t\t%d milllis", returnCode == 0 ? "PASSED" : "FAILED",
 				System.currentTimeMillis() - start));
 		results.put(testSuiteName, m);
 		return returnCode;
@@ -132,7 +132,7 @@ public class Main {
 	private static void printOffendingLineNumber(String name, Throwable e) {
 		boolean foundSecond = true;// first one is BaseScript
 		for (StackTraceElement ste : e.getStackTrace()) {
-			if (ste.getFileName().equals("<eval>") && (foundSecond = !foundSecond)) {
+			if (ste.getFileName().equals("<eval>") && ste.getLineNumber() != -1 && (foundSecond = !foundSecond)) {
 				System.err.printf("Error in %s:%s:%d\t%s\n", name, ste.getMethodName(), ste.getLineNumber(),
 						e.getMessage());
 				return;

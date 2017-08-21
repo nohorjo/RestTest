@@ -15,6 +15,11 @@
 	</target>
 
 	<target name="jar">
+		<javac srcdir="src"
+         destdir="bin"
+         debug="on"
+         source="1.8"
+		/>
 		<jar destfile="build/${app.name}.jar">
 			<fileset dir="bin">
 				<exclude name="**/*TEST.class" />
