@@ -97,7 +97,7 @@ public class Main {
 		try {
 			String contents = new String(Files.readAllBytes(script.toPath()));
 			try {
-				new ScriptRunner(contents).run();
+				new ScriptRunner(name, contents).run();
 			} catch (RuntimeException e) {
 				throw e.getCause();
 			}

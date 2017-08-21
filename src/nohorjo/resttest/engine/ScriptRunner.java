@@ -10,6 +10,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import nohorjo.resttest.utils.PropertiesUtils;
+
 public class ScriptRunner {
 
 	private static final String BASE_SCRIPT;
@@ -35,9 +37,11 @@ public class ScriptRunner {
 	private ScriptEngine engine = new ScriptEngineManager(null).getEngineByName("nashorn");
 
 	private String script;
+	private String name;
 
-	public ScriptRunner(String script) throws ScriptException {
+	public ScriptRunner(String name, String script) throws ScriptException {
 		this.script = script;
+		this.name = name;
 		engine.eval(BASE_SCRIPT);
 		engine.eval(INIT_SCRIPT);
 	}
@@ -48,6 +52,7 @@ public class ScriptRunner {
 	 * @throws Throwable
 	 */
 	public void run() throws Throwable {
+		PropertiesUtils.setGlobal("current.test.case", name);
 		engine.eval(script);
 	}
 
