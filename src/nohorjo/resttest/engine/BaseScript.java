@@ -4,6 +4,7 @@ package nohorjo.resttest.engine;
  * Implements utils classes and provides an interface for the JavaScript
  */
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +20,11 @@ import nohorjo.resttest.utils.PropertiesUtils;
 import nohorjo.resttest.utils.XMLUtils;
 
 public class BaseScript {
+
+	public static Map<String, ?> makeMultiPartRequest(String url, String method, Map<String, String> headers,
+			List<Map<String, ?>> data, int timeout) throws IOException {
+		return HttpUtils.makeMultiPartRequest(url, method, headers, data, timeout);
+	}
 
 	public static Map<String, ?> makeRequest(String url, String method, Map<String, String> headers, String data,
 			boolean isFile, int timeout) throws IOException {

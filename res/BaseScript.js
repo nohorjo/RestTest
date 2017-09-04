@@ -1,5 +1,10 @@
 var base = Java.type("nohorjo.resttest.engine.BaseScript");
 
+function makeMultiPartRequest() {
+	return base.makeMultiPartRequest(payload.url, payload.method.toUpperCase(),
+			payload.headers || {}, payload.data, payload.timeout || 60000);
+}
+
 function makeRequest(payload) {
 	var isFile = false;
 	if (payload.file) {

@@ -2,6 +2,7 @@ package nohorjo.resttest.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,6 +14,25 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpUtils {
+
+	public static Map<String, ?> makeMultiPartRequest(String url, String method, Map<String, ?> headers,
+			List<Map<String, ?>> data, int timeout) throws IOException {
+		MultiPartRequester requester = new MultiPartRequester(url, method, timeout);
+
+		for (String headerName : headers.keySet()) {
+			requester.addHeaderField(headerName, (String)headers.get(headerName));
+		}
+		
+		for (Map<String, ?> dataParts : data) {
+			if (dataParts.get("isFile") != null && (boolean) dataParts.get("isFile")) {
+				requester.addFilePart((String) dataParts.get("name"), new File((String) dataParts.get("data")));
+			} else {
+				requester.addFormField((String) dataParts.get("name"), (String) dataParts.get("data"));
+			}
+		}
+
+		return requester.finish();
+	}
 
 	/**
 	 * Makes a http request
