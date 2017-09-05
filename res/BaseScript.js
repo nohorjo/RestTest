@@ -48,3 +48,14 @@ function evalXPath(xml, xpath) {
 function sleep(millis) {
 	base.sleep(millis);
 }
+
+function thread(func) {
+	base.thread(func);
+}
+
+function timeout(func, millis) {
+	thread(function() {
+		sleep(millis);
+		func();
+	});
+}

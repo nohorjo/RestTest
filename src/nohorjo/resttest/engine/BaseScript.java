@@ -12,6 +12,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import nohorjo.resttest.utils.AssertUtils;
 import nohorjo.resttest.utils.FileUtils;
 import nohorjo.resttest.utils.GenericUtils;
@@ -66,5 +67,9 @@ public class BaseScript {
 
 	public static void sleep(long millis) {
 		GenericUtils.sleep(millis);
+	}
+
+	public static void thread(ScriptObjectMirror function) {
+		GenericUtils.thread(function);
 	}
 }
