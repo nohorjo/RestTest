@@ -20,9 +20,9 @@ public class HttpUtils {
 		MultiPartRequester requester = new MultiPartRequester(url, method, timeout);
 
 		for (String headerName : headers.keySet()) {
-			requester.addHeaderField(headerName, (String)headers.get(headerName));
+			requester.addHeaderField(headerName, (String) headers.get(headerName));
 		}
-		
+
 		for (Map<String, ?> dataParts : data) {
 			if (dataParts.get("isFile") != null && (boolean) dataParts.get("isFile")) {
 				requester.addFilePart((String) dataParts.get("name"), new File((String) dataParts.get("data")));
@@ -79,23 +79,25 @@ public class HttpUtils {
 
 		StringBuffer respBody = new StringBuffer();
 
-		BufferedReader responseReader = null;
-		try {
-			responseReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		} catch (IOException e) {
-			responseReader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		try (BufferedReader responseReader = getResponseReader(con)) {
+			String inputLine;
+			while ((inputLine = responseReader.readLine()) != null) {
+				respBody.append(inputLine);
+			}
 		}
-
-		String inputLine;
-		while ((inputLine = responseReader.readLine()) != null) {
-			respBody.append(inputLine);
-		}
-		responseReader.close();
 
 		response.put("body", respBody.toString());
 
 		response.put("headers", con.getHeaderFields());
 
 		return response;
+	}
+
+	private static BufferedReader getResponseReader(HttpURLConnection con) {
+		try {
+			return new BufferedReader(new InputStreamReader(con.getInputStream()));
+		} catch (IOException e) {
+			return new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		}
 	}
 }
