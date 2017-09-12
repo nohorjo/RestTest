@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import nohorjo.resttest.utils.PropertiesUtils;
 
 public class Main {
 
-	private static final Map<String, Map<String, String>> results = new HashMap<>();
+	private static final Map<String, Map<String, String>> results = new LinkedHashMap<>();
 
 	private static final FilenameFilter JS_ONLY = new FilenameFilter() {
 		@Override
@@ -82,7 +82,7 @@ public class Main {
 				System.out.println(testSuite);
 				Map<String, String> testSuiteResults = results.get(testSuite);
 				for (String result : testSuiteResults.keySet()) {
-					System.out.println("\t" + result + "\t" + testSuiteResults.get(result));
+					System.out.printf("\t%-32s%-20s\n", result, testSuiteResults.get(result));
 				}
 			}
 		}
@@ -115,9 +115,9 @@ public class Main {
 
 		Map<String, String> m = results.get(testSuiteName);
 		if (m == null) {
-			m = new HashMap<>();
+			m = new LinkedHashMap<>();
 		}
-		m.put(name, String.format("%s\t\t%d milllis", returnCode == 0 ? "PASSED" : "FAILED",
+		m.put(name, String.format("%s\t%d millis", returnCode == 0 ? "PASSED" : "FAILED",
 				System.currentTimeMillis() - start));
 		results.put(testSuiteName, m);
 		return returnCode;

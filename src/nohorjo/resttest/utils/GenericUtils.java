@@ -18,4 +18,8 @@ public class GenericUtils {
 			};
 		}.start();
 	}
+
+	public static long currentTimestamp() {
+		return System.currentTimeMillis();
+	}
 }

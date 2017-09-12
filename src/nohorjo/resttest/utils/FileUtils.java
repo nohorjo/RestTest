@@ -20,4 +20,8 @@ public class FileUtils {
 		return new File(filename).exists();
 	}
 
+	public static void deleteFile(String filename) throws IOException {
+		Files.delete(Paths.get(filename));
+	}
+
 }

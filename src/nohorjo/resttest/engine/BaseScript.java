@@ -48,6 +48,10 @@ public class BaseScript {
 		return FileUtils.fileExists(filename);
 	}
 
+	public static void deleteFile(String filename) throws IOException {
+		FileUtils.deleteFile(filename);
+	}
+
 	public static void setGlobal(String name, Object value) {
 		PropertiesUtils.setGlobal(name, value);
 	}
@@ -71,5 +75,9 @@ public class BaseScript {
 
 	public static void thread(ScriptObjectMirror function) {
 		GenericUtils.thread(function);
+	}
+	
+	public static long currentTimestamp() {
+		return GenericUtils.currentTimestamp();
 	}
 }

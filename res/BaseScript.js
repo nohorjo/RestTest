@@ -6,17 +6,13 @@ function makeMultiPartRequest() {
 }
 
 function makeRequest(payload) {
-	var isFile = false;
-	if (payload.file) {
-		isFile = true;
-	}
 	return base.makeRequest(payload.url, payload.method.toUpperCase(),
-			payload.headers || {}, payload.data || null, isFile,
+			payload.headers || {}, payload.data || null, payload.file || false,
 			payload.timeout || 60000);
 }
 
 function assert(bool, message) {
-	base.assertTrue(bool, message || "");
+	base.assertTrue(bool || false, message || "");
 }
 
 function writeToFile(filename, data, append) {
@@ -29,6 +25,10 @@ function readFromFile(filename) {
 
 function fileExists(filename) {
 	return base.fileExists(filename);
+}
+
+function deleteFile(filename) {
+	base.deleteFile(filename);
 }
 
 function global(name, value) {
@@ -58,4 +58,8 @@ function timeout(func, millis) {
 		sleep(millis);
 		func();
 	});
+}
+
+function currentTimestamp(){
+	return base.currentTimestamp();
 }
