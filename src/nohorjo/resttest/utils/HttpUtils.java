@@ -93,7 +93,7 @@ public class HttpUtils {
 		return response;
 	}
 
-	private static BufferedReader getResponseReader(HttpURLConnection con) {
+	static BufferedReader getResponseReader(HttpURLConnection con) {
 		try {
 			return new BufferedReader(new InputStreamReader(con.getInputStream()));
 		} catch (IOException e) {

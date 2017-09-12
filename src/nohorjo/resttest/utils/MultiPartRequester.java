@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -147,18 +146,12 @@ public class MultiPartRequester {
 
 		StringBuffer respBody = new StringBuffer();
 
-		BufferedReader responseReader = null;
-		try {
-			responseReader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
-		} catch (IOException e) {
-			responseReader = new BufferedReader(new InputStreamReader(httpConn.getErrorStream()));
+		try (BufferedReader responseReader = HttpUtils.getResponseReader(httpConn)) {
+			String inputLine;
+			while ((inputLine = responseReader.readLine()) != null) {
+				respBody.append(inputLine);
+			}
 		}
-
-		String inputLine;
-		while ((inputLine = responseReader.readLine()) != null) {
-			respBody.append(inputLine);
-		}
-		responseReader.close();
 
 		response.put("body", respBody.toString());
 
