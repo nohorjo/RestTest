@@ -6,9 +6,9 @@ function makeMultiPartRequest() {
 }
 
 function makeRequest(payload) {
-	return base.makeRequest(payload.url, payload.method.toUpperCase(),
-			payload.headers || {}, payload.data || null, payload.file || false,
-			payload.timeout || 60000);
+	return base.makeRequest(payload.url, (payload.method || "GET")
+			.toUpperCase(), payload.headers || {}, payload.data || null,
+			payload.file || false, payload.timeout || 60000);
 }
 
 function assert(bool, message) {
@@ -60,6 +60,6 @@ function timeout(func, millis) {
 	});
 }
 
-function currentTimestamp(){
+function currentTimestamp() {
 	return base.currentTimestamp();
 }

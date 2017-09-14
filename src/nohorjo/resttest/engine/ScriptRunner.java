@@ -62,11 +62,13 @@ public class ScriptRunner {
 	 * 
 	 * @param projectDir
 	 * @throws IOException
+	 * @throws ScriptException 
 	 */
-	public static void loadInitScript(File projectDir) throws IOException {
+	public static void loadInitScript(File projectDir) throws IOException, ScriptException {
 		File initScript = new File(projectDir, "init.js");
 		if (initScript.exists()) {
 			INIT_SCRIPT = new String(Files.readAllBytes(initScript.toPath()));
+			new ScriptEngineManager(null).getEngineByName("nashorn").eval(INIT_SCRIPT);
 		}
 	}
 

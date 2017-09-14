@@ -53,24 +53,32 @@ public class Main {
 	public static void main(String[] args) {
 		int returnCode = 0;
 		try {
-			String project = args[0];
-			File projectDir = new File(project);
-			PropertiesUtils.loadEnvAndProperties(projectDir);
-			ScriptRunner.loadInitScript(projectDir);
+			try {
+				String project = args[0];
+				File projectDir = new File(project);
+				PropertiesUtils.loadEnvAndProperties(projectDir);
+				ScriptRunner.loadInitScript(projectDir);
 
-			List<File> testSuites = Arrays.asList(projectDir.listFiles(DIRS));
-			testSuites.sort(BY_NAME);
-			for (File ts : testSuites) {
-				List<File> scripts = Arrays.asList(ts.listFiles(JS_ONLY));
-				scripts.sort(BY_NAME);
-				for (File testCasescript : scripts) {
-					int rc = processScript(ts.getName(), testCasescript);
-					if (returnCode == 0) {// if any test fails return 1
-						returnCode = rc;
+				List<File> testSuites = Arrays.asList(projectDir.listFiles(DIRS));
+				testSuites.sort(BY_NAME);
+				for (File ts : testSuites) {
+					List<File> scripts = Arrays.asList(ts.listFiles(JS_ONLY));
+					scripts.sort(BY_NAME);
+					for (File testCasescript : scripts) {
+						int rc = processScript(ts.getName(), testCasescript);
+						if (returnCode == 0) {// if any test fails return 1
+							returnCode = rc;
+						}
 					}
 				}
+				System.out.println("\n\nDone!");
+			} catch (ScriptException e) {
+				System.err.printf("Error in init.js:%d\t%s\n", e.getLineNumber(), e.getMessage());
+				returnCode = 1;
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.err.println("You must provide the path to the project directory");
+				returnCode = 1;
 			}
-			System.out.println("\n\nDone!");
 		} catch (Throwable e) {
 			e.printStackTrace();
 			returnCode = 1;
